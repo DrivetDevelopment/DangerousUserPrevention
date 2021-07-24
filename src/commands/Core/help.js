@@ -11,7 +11,7 @@ module.exports = class extends Command {
 
     async run(message, args) {
         const guildSettings = await this.bot.mysql.rowQuery('SELECT * FROM guilds WHERE guildId = ?', message.guild.id);
-
+        const prefix = guildSettings && guildSettings.prefix ? guildSettings.prefix : this.bot.config.bot.prefix
         // Finds a command
         let cmd;
         if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() === args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
@@ -43,10 +43,10 @@ module.exports = class extends Command {
                 embed: {
                     color: parseInt(this.bot.colors.BLURPLE),
                     author: {
-                        name: 'Available commands',
+                        name: await message.translate('commands:help.title'),
                         icon_url: this.bot.user.avatarURL
                     },
-                    description: `Prefix: \`${guildSettings && guildSettings.prefix ? guildSettings.prefix : this.bot.config.bot.prefix}\` \nType \`${guildSettings && guildSettings.prefix ? guildSettings.prefix : this.bot.config.bot.prefix}help [command name]\` for command specific information.`,
+                    description: await message.translate('commands:help.description', { prefix }),
                     fields: categories.map(category => ({
                         name: sortedcategories[categories.indexOf(category)],
                         value: this.bot.commands.map(c => {
@@ -64,7 +64,7 @@ module.exports = class extends Command {
             const construct = [];
             if (cmd.aliases.length) {
                 construct.push({
-                    name: "Aliases",
+                    name: await message.translate('commands:help.aliases'),
                     value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ")}`,
                     inline: false,
                 });
@@ -72,33 +72,33 @@ module.exports = class extends Command {
 
             if (cmd.examples.length) {
                 construct.push({
-                    name: "Examples",
+                    name: await message.translate('commands:help.examples'),
                     value: `${cmd.examples.map(example => `\`${example}\``).join("\n")}`,
                     inline: false,
                 });
             }
 
             if (cmd.usage) construct.push({
-                name: "Usage",
+                name: await message.translate('commands:help.usage'),
                 value: `\`${cmd.usage}\``,
                 inline: false
             });
 
             if (cmd.botPermissions && cmd.botPermissions !== "embedLinks") {
                 construct.push({
-                    name: "Bot Permissions",
+                    name: await message.translate('commands:help.bot_permissions'),
                     value: cmd.botPermissions,
                     inline: true,
                 });
             }
 
             if (cmd.userPermissions) construct.push({
-                name: "Required Permissions",
+                name: await message.translate('commands:help.required_permissions'),
                 value: cmd.userPermissions,
                 inline: true
             });
             if (cmd.ownerOnly) construct.push({
-                name: "Owner Only",
+                name: await message.translate('commands:help.owner_only'),
                 value: cmd.ownerOnly ? 'Yes' : 'No',
                 inline: true
             });
@@ -107,7 +107,7 @@ module.exports = class extends Command {
                 embed: {
                     color: parseInt(this.bot.colors.BLURPLE),
                     title: `${cmd.category}:${cmd.id}`,
-                    description: cmd.description || "No description given.",
+                    description: cmd.description || await message.translate('commands:help.no_desc'),
                     fields: construct,
                 },
             });

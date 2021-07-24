@@ -11,19 +11,22 @@ module.exports = class extends Command {
     }
 
     async run(message, args) {
-        if (!args.length) return message.channel.createMessage('Please give a user\'s id to report!')
+        if (!args.length) return message.deny('commands:report.noArgs')
         const match = args.toString().match(/\d{18}/);
         let member = match ? await this.bot.getRESTUser(match[0]) : null
 
         let reason = args.slice(1).join(' ')
+        const user = await this.bot.mysql.rowQuery('SELECT token FROM tokens WHERE id = ?', message.author.id)
 
-        if (!member) return message.channel.createMessage('That user was not found!')
-        if (member.id === message.author.id) return message.channel.createMessage('You can\'t report yourself!')
+        if (!member) return message.deny('commands:report.notFound')
+        if (member.id === message.author.id) return message.deny('commands:report.cantReportSelf')
 
-        const report = await fetch(`https://discord.riverside.rocks/report.json.php?id=${member.id}&key=${this.bot.config.ddubToken}&details=${reason ? reason : 'No reason'} (Reported by ${message.author.username})`).then(res => res.json())
+        const token = user && user.token ? user.token : null
 
-        if (!report) return message.channel.createMessage('Report failed. DDUB didn\'t receive the request!')
-        if (report.message === 'You can only report a user every 10 minutes.') return message.channel.createMessage('This user has been already reported within the 10 minutes!')
+        const report = await fetch(`https://discord.riverside.rocks/report.json.php?id=${member.id}&key=${token ? token : this.bot.config.ddubToken}&details=${reason ? reason : 'No reason'} ${!token ? `(Reported by ${message.author.username})` : ''}`).then(res => res.json())
+
+        if (!report) return message.deny('commands:report.reportFailed')
+        if (report.message === 'You can only report a user every 10 minutes.') return message.deny('commands:report.alreadyReported')
 
         const post = { author: message.author.id, 'reported_user': member.id, reason }
         await this.bot.mysql.query('INSERT INTO reports SET ?', post)
@@ -32,10 +35,13 @@ module.exports = class extends Command {
             embed: {
                 color: parseInt(this.bot.colors.BLURPLE),
                 url: `https://discord.riverside.rocks/check?id=${member.id}`,
-                title: 'User Reported!',
-                description: `${member.username} was reported successfully!`,
+                title: await message.translate('commands:report.successTitle'),
+                description: await message.translate('commands:report.successDescription', { user: member.username }),
 
             }
         })
+        if (!token) {
+            message.channel.createMessage('Want to report users with whitelabel? Use the `d!token` command! https://cdn.drivet.xyz/dupwhitelabel.png')
+        }
     }
 };

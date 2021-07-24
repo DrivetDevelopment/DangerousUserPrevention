@@ -27,7 +27,7 @@ module.exports = class extends Command {
             embed: {
                 title: 'All reports by DUP',
                 fields: construct,
-                footer: { text: `Showing latest 5 reports · ${reports.length} reports total · Latest report: ${reports[0].timestamp}` }
+                footer: { text: `${message.translate('commands:reports.showingLatest')} · ${reports.length} reports total · Latest report: ${reports[0].timestamp}` }
             }
         })
     }

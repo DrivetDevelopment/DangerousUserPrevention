@@ -8,13 +8,14 @@ class DUPClient extends Client {
         this.slash_commands = [];
         this.events = [];
         this.version = require("../../package.json").version;
-        this.colors = require('../settings/colors.json').colors;
-        this.config = require('config').util.toObject()
-        this.mysql = require('../../database');
+        this.colors = require('../settings/config.json').colors;
+        this.config = require('config').util.toObject();
+        this.mysql = require('@drivet/database');
+        this.enabledLanguages = require("../../languages.json");
 
         this.connect();
 
-        load.all(this)
+        load.all(this);
 
         setInterval(async () => {
             const config = await this.mysql.rowsQuery('SELECT * FROM reports');

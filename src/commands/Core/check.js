@@ -23,34 +23,34 @@ module.exports = class extends Command {
         if (parseInt(score) === parseInt(0) && user.total_reports >= 1) {
             whitelisted = true
             construct.push({
-                name: 'Safe',
-                value: match && member.id !== message.author.id ? `${member.username} is a whitelisted user.` : 'Your account is whitelisted.'
+                name: await message.translate('commands:check.safe'),
+                value: match && member.id !== message.author.id ? await message.translate('commands:check.user.whitelistDesc', { memberName: member.username }) : await message.translate('commands:check.author.whitelistDesc')
             })
 
             construct.push({
-                name: 'Note',
-                value: 'While the user appears to be whitelisted, it does not mean the user is safe all the time.'
+                name: await message.translate('commands:check.note'),
+                value: await message.translate('commands:check.user.noteDesc')
             })
         }
 
         if (!score || score <= 29 && !whitelisted) {
             construct.push({
-                name: 'Safe',
-                value: match && member.id !== message.author.id ? `${member.username} is completely safe.` : 'Your account is completely safe'
+                name: await message.translate('commands:check.safe'),
+                value: match && member.id !== message.author.id ? await message.translate('commands:check.user.safeDesc', { memberName: member.username }) : await message.translate('commands:check.author.safeDesc')
             })
         }
 
         if (score >= 30 && score <= 49) {
             construct.push({
-                name: 'Dunno',
-                value: match && member.id !== message.author.id ? `${member.username} might be dangerous` : 'Your account might be dangrous'
+                name: await message.translate('commands:check.notTooDangerous'),
+                value: match && member.id !== message.author.id ? await message.translate('commands:check.user.notTooDangerousDesc', { memberName: member.username }) : await message.translate('commands:check.author.notTooDangerousDesc')
             })
         }
 
         if (score >= 50 && score <= 100) {
             construct.push({
                 name: 'Dangerous',
-                value: match && member.id !== message.author.id ? `${member.username} is dangerous! Ban that user fast as possible!` : 'Your account is dangerous!!'
+                value: match && member.id !== message.author.id ? await message.translate('commands:check.user.dangerousDesc', { memberName: member.username }) : await message.translate('commands:check.author.dangerousDesc')
             })
         }
 
@@ -62,15 +62,24 @@ module.exports = class extends Command {
                     icon_url: member.dynamicAvatarURL()
                 },
                 url: `https://discord.riverside.rocks/check?id=${member.id}`,
-                description: `[See reports here](https://discord.riverside.rocks/check?id=${member.id})`,
+                description: `[${await message.translate('commands:check.seeReports')}](https://discord.riverside.rocks/check?id=${member.id})`,
                 fields: construct,
                 footer: { text: user.total_reports ? match && member.id !== message.member.user ?
                         // if args
-                        `This user has been reported ${user.total_reports === 1 ? '1 time' : `${user.total_reports} times`}`
+                        user.total_reports === 1 ?
+                            await message.translate('commands:check.footer.user.reportedOneTime', { count: user.total_reports })
+                            :
+                            await message.translate('commands:check.footer.user.reportedMultipleTimes', { count: user.total_reports })
                         // if no args
-                        : `You have been reported ${user.total_reports === 1 ? '1 time' : `${user.total_reports} times`}`
+                        : user.total_reports === 1 ?
+                            await message.translate('commands:check.footer.author.reportedOneTime', { count: user.total_reports })
+                            :
+                            await message.translate('commands:check.footer.author.reportedMultipleTimes', { count: user.total_reports })
                         // if never reported
-                        : match ? 'This user have never been reported' : 'You have never been reported'
+                        : match ?
+                            await message.translate('commands:check.footer.user.reportedNever')
+                            :
+                            await message.translate('commands:check.footer.author.reportedNever')
                 }
             }
         })

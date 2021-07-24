@@ -2,7 +2,7 @@ const { SlashCommand, CommandOptionType } = require('slash-create');
 const fetch = require('node-fetch');
 const REST = require('../../utils/rest')
 const config = require('config').util.toObject();
-const mysql = require('../../../database')
+const mysql = require('@drivet/database')
 
 module.exports = class ReportCommand extends SlashCommand {
     constructor(creator) {

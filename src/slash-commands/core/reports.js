@@ -1,5 +1,5 @@
 const { SlashCommand } = require('slash-create');
-const mysql = require('../../../database')
+const mysql = require('@drivet/database')
 
 module.exports = class ReportCommand extends SlashCommand {
     constructor(creator) {
