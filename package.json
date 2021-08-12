@@ -24,6 +24,7 @@
     "cat-loggr": "^1.2.2",
     "config": "^3.3.6",
     "express": "^4.17.1",
+    "newrelic": "^8.1.0",
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
     "slash-create": "^3.5.0"

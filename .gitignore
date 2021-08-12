@@ -7,3 +7,5 @@ ngrok.exe
 
 node_modules
 package-lock.json
+
+newrelic.js

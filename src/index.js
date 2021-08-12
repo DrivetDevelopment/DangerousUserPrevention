@@ -1,3 +1,4 @@
+require('newrelic');
 const config = require('config').util.toObject();
 const express = require('express');
 const app = express();
