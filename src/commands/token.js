@@ -1,8 +1,6 @@
 const { SlashCommand, CommandOptionType } = require('slash-create');
 const axios = require('axios');
 const mysql = require('@drivet/database');
-const config = require('config').util.toObject()
-
 module.exports = class CheckCommand extends SlashCommand {
     constructor(creator) {
         super(creator, {
@@ -21,6 +19,10 @@ module.exports = class CheckCommand extends SlashCommand {
     }
 
     async run(ctx) {
+      const config = await mysql.rowQuery('SELECT token FROM tokens WHERE id = ?', ctx.member.user.id)
+
+      console.log(config)
+
       const data = await axios.get('https://discord.riverside.rocks/auth.json.php', {
         params: {
           key: ctx.options.token
