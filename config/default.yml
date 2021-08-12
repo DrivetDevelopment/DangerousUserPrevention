@@ -1,12 +1,14 @@
 bot:
   token: ''
-  prefix: 'd!'
   clientId: ''
-  publicKey:
+  publicKey: ''
 
-databases: 
+webserver:
+  port: ''
+
+databases:
   mysql:
-    host: ''
+    host: '192.168.1.106'
     user: ''
     password: ''
     database: 'DUP'

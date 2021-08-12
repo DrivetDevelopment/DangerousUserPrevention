@@ -1,43 +1,31 @@
 {
   "name": "dup",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "pm2 start src/index.js --name DUP",
-    "dev": "SET NODE_ENV=development&&node ."
+    "dev": "SET NODE_ENV=development&&nodemon .",
+    "ngrok": "ngrok.exe http 3002"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GhostSlayer/DangerousUserPrevention.git"
+    "url": "git+https://github.com/DrivetDevelopment/DUP.git"
   },
-  "keywords": [
-    "dangeroususer",
-    "riversiderocks"
-  ],
-  "author": "GhostSlayer",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GhostSlayer/DangerousUserPrevention/issues"
+    "url": "https://github.com/DrivetDevelopment/DUP/issues"
   },
-  "homepage": "https://github.com/GhostSlayer/DangerousUserPrevention#readme",
+  "homepage": "https://github.com/DrivetDevelopment/DUP#readme",
   "dependencies": {
     "@drivet/database": "^0.1.7",
-    "@extreme_hero/deeptype": "^1.0.1",
+    "axios": "^0.21.1",
+    "cat-loggr": "^1.2.2",
     "config": "^3.3.6",
-    "custom-env": "^2.0.1",
-    "eris": "^0.14.1",
-    "eris-additions": "^1.4.1",
-    "express": "^4.17.1",
-    "fs": "0.0.2",
-    "i18next": "^20.3.2",
-    "i18next-fs-backend": "^1.1.1",
-    "js-yaml": "^4.1.0",
-    "jszip": "^3.6.0",
-    "mysql": "^2.18.1",
+    "fastify": "^3.20.1",
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
-    "slash-create": "^3.1.0",
-    "util": "^0.12.4"
+    "slash-create": "^3.5.0"
   }
 }

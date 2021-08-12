@@ -1,4 +1,9 @@
+# Hide sensitive information 
 config/*
 !config/default.yml
-.idea
+
+# Hide ngrok (I have ngrok because Discord API doesn't allow http requests for the interactions..)
+ngrok.exe
+
 node_modules
+package-lock.json
