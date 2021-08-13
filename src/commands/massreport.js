@@ -44,12 +44,14 @@ module.exports = class CheckCommand extends SlashCommand {
 
     await ctx.send(`Reporting all the ${users.length} users!`)
 
-    for(let i of users) {
-      logger.info(`Reporting ${i}`)
+    for(let id of users) {
+      logger.info(`Reporting ${id}`)
+
+      mysql.query('INSERT INTO reports SET ?', { id: id, author: ctx.member.user.id, reason: ctx.options.reason })
 
       await axios.get('https://discord.riverside.rocks/report.json.php', {
         params: {
-          id: i,
+          id,
           key: token ? token : config.ddubToken,
           details: `${ctx.options.reason ? ctx.options.reason : 'No Reason.'} ${!token ? `(Reported by ${ctx.member.user.username}#${ctx.member.user.discriminator})` : ''}`
         }
