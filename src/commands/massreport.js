@@ -37,7 +37,7 @@ module.exports = class CheckCommand extends SlashCommand {
     const user = await mysql.rowQuery('SELECT token FROM tokens WHERE id = ?', ctx.member.user.id)
     const token = user && user.token ? user.token : null
 
-    if (!data.id) return 'Sorry, this command is only for trusted users to prevent any abuse towards DDUB.'
+    if (!data) return 'Sorry, this command is only for trusted users to prevent any abuse towards DDUB.'
 
     const hastecontent = await haste.get(ctx.options.haste);
     const users = hastecontent.toString().replace(/\r\n/g,'\n').split('\n');
