@@ -2,7 +2,7 @@ const { SlashCommand, CommandOptionType, ComponentType, ButtonStyle } = require(
 const mysql = require('@drivet/database');
 const axios = require('axios');
 const hastebin = require('hastebin.js');
-const haste = new hastebin({ url: 'https://hastebin.com' });
+const haste = new hastebin({ url: 'https://haste.ghostslayer.tk' });
 const config = require('config').util.toObject();
 const CatLoggr = require('cat-loggr');
 const logger = new CatLoggr().setLevel(process.env.NODE_ENV === 'development' ? 'debug' : 'info');
