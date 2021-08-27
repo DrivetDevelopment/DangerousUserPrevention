@@ -1,4 +1,4 @@
-const { SlashCommand } = require('slash-create');
+const { SlashCommand, ComponentType, ButtonStyle } = require('slash-create');
 
 module.exports = class ReportCommand extends SlashCommand {
     constructor(creator) {
@@ -10,6 +10,17 @@ module.exports = class ReportCommand extends SlashCommand {
 
     async run(ctx) {
       await ctx.defer(true)
-      return 'Heya! Check my statuspage at: <https://ghostslayeri.statuspage.io>!'
+      return ({
+        content: 'Heya! Check my statuspage by clicking the button below!',
+        components: [{
+          type: ComponentType.ACTION_ROW,
+          components: [{
+            type: ComponentType.BUTTON,
+            style: ButtonStyle.LINK,
+            label: 'Check Drivet\'s statuspage',
+            url: `https://status.drivet.xyz`,
+          }]
+        }]
+      })
     }
 }
